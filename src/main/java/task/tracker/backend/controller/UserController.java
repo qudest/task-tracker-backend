@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,11 +24,7 @@ public class UserController {
     AuthService authService;
 
     @PostMapping("/user")
-    public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
-        //todo handling
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
+    public ResponseEntity<JwtResponse> register(@Valid @RequestBody UserDto userDto) {
         String jwt = userService.createNewUser(userDto);
         return ResponseEntity.ok().header("Authorization", jwt).body(new JwtResponse(jwt));
     }
@@ -40,11 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
-        //todo handling
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody UserDto userDto) {
         String jwt = authService.login(userDto);
         return ResponseEntity.ok().header("Authorization", jwt).body(new JwtResponse(jwt));
     }
