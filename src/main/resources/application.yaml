@@ -13,3 +13,6 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration-time: ${JWT_EXPIRATION_TIME}
+
+server:
+  address: ${SERVER_ADDRESS}
