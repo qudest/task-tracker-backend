@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     JwtAccessFilter jwtAccessFilter;
+    CorsConfiguration corsConfiguration;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -31,6 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(cors -> corsConfiguration.corsConfigurationSource())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "user", "auth/login").permitAll()
                         .anyRequest().authenticated())
