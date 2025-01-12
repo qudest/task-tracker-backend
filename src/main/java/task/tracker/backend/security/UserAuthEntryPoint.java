@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import task.tracker.backend.dto.ErrorDto;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -30,7 +31,7 @@ public class UserAuthEntryPoint implements AuthenticationEntryPoint {
                 new ErrorDto(
                         HttpServletResponse.SC_UNAUTHORIZED,
                         "Unauthorized",
-                        authException.getMessage(),
+                        List.of(authException.getMessage()),
                         request.getServletPath()
                 ));
     }
