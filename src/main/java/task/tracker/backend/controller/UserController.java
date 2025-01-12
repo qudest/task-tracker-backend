@@ -4,13 +4,13 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import task.tracker.backend.dto.JwtResponse;
 import task.tracker.backend.dto.UserDto;
 import task.tracker.backend.dto.UserInfoDto;
 import task.tracker.backend.service.AuthService;
@@ -31,7 +31,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
         String jwt = userService.createNewUser(userDto);
-        return ResponseEntity.ok().header("Authorization", jwt).body(Pair.of("token", jwt));
+        return ResponseEntity.ok().header("Authorization", jwt).body(new JwtResponse(jwt));
     }
 
     @GetMapping("/user")
@@ -46,7 +46,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
         String jwt = authService.login(userDto);
-        return ResponseEntity.ok().header("Authorization", jwt).body(Pair.of("token", jwt));
+        return ResponseEntity.ok().header("Authorization", jwt).body(new JwtResponse(jwt));
     }
 
 }
