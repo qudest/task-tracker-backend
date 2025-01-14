@@ -5,7 +5,7 @@ import java.util.List;
 public record ErrorDto(
         int status,
         String error,
-        List<String> message,
+        List<String> messages,
         String path
 ) {
 }
