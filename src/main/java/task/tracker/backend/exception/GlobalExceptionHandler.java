@@ -41,4 +41,16 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorDto> handleUserNotFoundError(UserNotFoundException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorDto(
+                        HttpStatus.NOT_FOUND.value(),
+                        "Not Found",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
+
 }

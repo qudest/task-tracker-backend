@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import task.tracker.backend.dto.UserDto;
 import task.tracker.backend.dto.UserInfoDto;
 import task.tracker.backend.exception.EmailAlreadyTakenException;
+import task.tracker.backend.exception.UserNotFoundException;
 import task.tracker.backend.model.User;
 import task.tracker.backend.repository.UserRepository;
 
@@ -29,8 +30,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //todo exception
-        return userRepository.findByEmail(username).orElseThrow();
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> {
+                    log.warn("User not found: {}", username);
+                    return new UserNotFoundException();
+                });
     }
 
     @Transactional(rollbackFor = Exception.class)
