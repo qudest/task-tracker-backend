@@ -29,4 +29,16 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorDto> handleEmailAlreadyTakenError(EmailAlreadyTakenException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ErrorDto(
+                        HttpStatus.CONFLICT.value(),
+                        "Conflict",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
+
 }
