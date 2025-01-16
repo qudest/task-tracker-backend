@@ -31,7 +31,7 @@ public class JwtAccessFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtService.validateToken(jwt)) {
+            if (!jwt.isEmpty() && jwtService.validateToken(jwt)) {
                 String username = jwtService.getUsernameFromToken(jwt);
                 UserDetails userDetails = userService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
@@ -44,7 +44,6 @@ public class JwtAccessFilter extends OncePerRequestFilter {
 
             }
         } catch (Exception e) {
-            //todo handle
             logger.error("Cannot set user authentication: {}", e);
         }
 
@@ -56,6 +55,6 @@ public class JwtAccessFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
-        return null;
+        return "";
     }
 }
