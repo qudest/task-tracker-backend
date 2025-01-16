@@ -3,10 +3,13 @@ package task.tracker.backend.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import task.tracker.backend.dto.ErrorDto;
 
 import java.util.List;
@@ -48,6 +51,45 @@ public class GlobalExceptionHandler {
                 new ErrorDto(
                         HttpStatus.NOT_FOUND.value(),
                         "Not Found",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
+
+    @ExceptionHandler({
+            NoResourceFoundException.class,
+            NoHandlerFoundException.class
+    })
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorDto> handleNoResourceFoundError(NoResourceFoundException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorDto(
+                        HttpStatus.NOT_FOUND.value(),
+                        "Not Found",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ResponseEntity<ErrorDto> handleMethodNotAllowedError(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(
+                new ErrorDto(
+                        HttpStatus.METHOD_NOT_ALLOWED.value(),
+                        "Method Not Allowed",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ErrorDto> handleInternalServerError(Exception ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ErrorDto(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "Internal Server Error",
                         List.of(ex.getMessage()),
                         request.getServletPath())
         );
