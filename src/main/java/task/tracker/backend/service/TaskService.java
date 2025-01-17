@@ -11,6 +11,7 @@ import task.tracker.backend.model.User;
 import task.tracker.backend.repository.TaskRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -32,6 +33,18 @@ public class TaskService {
         task.setCompleted(false);
         taskRepository.save(task);
         return new TaskDto(task);
+    }
+
+    public TaskDto updateTask(UUID id, TaskDto taskDto) {
+        Task task = new Task();
+        task.setId(id);
+        task.setTitle(taskDto.title());
+        task.setDescription(taskDto.description());
+        task.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        task.setCompleted(taskDto.isCompleted());
+        task.setCompletedAt(taskDto.completedAt());
+        Task saved = taskRepository.save(task);
+        return new TaskDto(saved);
     }
 
 }
