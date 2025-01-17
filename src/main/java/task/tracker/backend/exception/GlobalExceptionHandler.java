@@ -1,5 +1,7 @@
 package task.tracker.backend.exception;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,21 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler({
+            JwtException.class,
+            SignatureException.class
+    })
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorDto> handleJwtError(JwtException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                new ErrorDto(
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "Unauthorized",
+                        List.of(ex.getMessage()),
+                        request.getServletPath())
+        );
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
