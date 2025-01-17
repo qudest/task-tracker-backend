@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class JwtAccessFilter extends OncePerRequestFilter {
 
     JwtService jwtService;
@@ -54,6 +56,7 @@ public class JwtAccessFilter extends OncePerRequestFilter {
 
             }
         } catch (Exception e) {
+            log.warn("Cannot set user authentication: {}", e.getMessage());
             resolver.resolveException(request, response, null, e);
             return;
         }
