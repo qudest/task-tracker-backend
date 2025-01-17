@@ -47,4 +47,8 @@ public class TaskService {
         return new TaskDto(saved);
     }
 
+    public void deleteTask(UUID id) {
+        taskRepository.deleteById(id);
+    }
+
 }
