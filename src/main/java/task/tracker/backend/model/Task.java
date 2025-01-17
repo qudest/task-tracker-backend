@@ -35,9 +35,12 @@ public class Task {
     Instant completedAt;
 
     @PrePersist
+    @PreUpdate
     public void prePersist() {
         if (isCompleted) {
             completedAt = Instant.now();
+        } else {
+            completedAt = null;
         }
     }
 
