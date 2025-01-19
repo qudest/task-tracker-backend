@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -58,6 +59,20 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST.value(),
                         "Bad Request",
                         errors,
+                        request.getServletPath())
+        );
+    }
+
+    @ExceptionHandler({
+            HttpMessageNotReadableException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleHttpMessageNotReadable(HttpServletRequest request) {
+        return ResponseEntity.badRequest().body(
+                new ErrorDto(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        List.of("Required request body is missing"),
                         request.getServletPath())
         );
     }
