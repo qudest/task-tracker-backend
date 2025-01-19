@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import task.tracker.backend.dto.ErrorDto;
@@ -63,16 +64,26 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler({
-            HttpMessageNotReadableException.class
-    })
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorDto> handleHttpMessageNotReadable(HttpServletRequest request) {
+    public ResponseEntity<ErrorDto> handleHttpMessageNotReadableError(HttpServletRequest request) {
         return ResponseEntity.badRequest().body(
                 new ErrorDto(
                         HttpStatus.BAD_REQUEST.value(),
                         "Bad Request",
                         List.of("Required request body is missing"),
+                        request.getServletPath())
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleMethodArgumentTypeMismatchError(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ErrorDto(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        List.of("Invalid parameter type"),
                         request.getServletPath())
         );
     }
