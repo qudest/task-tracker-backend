@@ -16,3 +16,6 @@ jwt:
 
 server:
   address: ${SERVER_ADDRESS}
+
+frontend:
+  url: ${FRONTEND_URL}

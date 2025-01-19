@@ -1,5 +1,6 @@
 package task.tracker.backend.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -12,14 +13,16 @@ import java.util.List;
 @Configuration
 public class CorsConfiguration {
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         org.springframework.web.cors.CorsConfiguration cors = new org.springframework.web.cors.CorsConfiguration();
         cors.setAllowCredentials(true);
         cors.setAllowedOrigins(
-                //todo вынести
-                List.of("http://localhost:5173")
+                List.of(frontendUrl)
         );
         cors.setAllowedHeaders(List.of(
                 HttpHeaders.AUTHORIZATION,
