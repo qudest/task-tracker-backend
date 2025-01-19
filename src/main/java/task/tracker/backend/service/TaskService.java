@@ -39,7 +39,9 @@ public class TaskService {
 
     public TaskDto updateTask(UUID id, TaskDto taskDto) {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
-        if (!task.getUser().equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+        if (!task.getUser().getId().equals(
+                ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()
+        )) {
             throw new AccessDeniedException("You can't update this task");
         }
         Task updatingTask = mapper.toEntity(taskDto);
@@ -50,7 +52,9 @@ public class TaskService {
 
     public void deleteTask(UUID id) {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
-        if (!task.getUser().equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+        if (!task.getUser().getId().equals(
+                ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()
+        )) {
             throw new AccessDeniedException("You can't delete this task");
         }
         taskRepository.delete(task);
