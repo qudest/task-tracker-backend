@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
             SignatureException.class,
     })
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ErrorDto> handleJwtError(JwtException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorDto> handleJwtError(Exception ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 new ErrorDto(
                         HttpStatus.UNAUTHORIZED.value(),
@@ -76,25 +76,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             UserNotFoundException.class,
-            TaskNotFoundException.class
-    })
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDto> handleUserNotFoundError(UserNotFoundException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ErrorDto(
-                        HttpStatus.NOT_FOUND.value(),
-                        "Not Found",
-                        List.of(ex.getMessage()),
-                        request.getServletPath())
-        );
-    }
-
-    @ExceptionHandler({
+            TaskNotFoundException.class,
             NoResourceFoundException.class,
             NoHandlerFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDto> handleNoResourceFoundError(NoResourceFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorDto> handleNotFoundError(Exception ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ErrorDto(
                         HttpStatus.NOT_FOUND.value(),
