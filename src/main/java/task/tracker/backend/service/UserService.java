@@ -15,6 +15,7 @@ import task.tracker.backend.dto.UserDto;
 import task.tracker.backend.dto.UserInfoDto;
 import task.tracker.backend.exception.EmailAlreadyTakenException;
 import task.tracker.backend.exception.UserNotFoundException;
+import task.tracker.backend.mapper.UserMapper;
 import task.tracker.backend.model.User;
 import task.tracker.backend.repository.UserRepository;
 
@@ -27,6 +28,7 @@ public class UserService implements UserDetailsService {
     UserRepository userRepository;
     JwtService jwtService;
     PasswordEncoder encoder;
+    UserMapper mapper = UserMapper.INSTANCE;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,17 +45,15 @@ public class UserService implements UserDetailsService {
             log.warn("Email is already taken: {}", userDto.email());
             throw new EmailAlreadyTakenException();
         }
-        User user = User.builder()
-                .email(userDto.email())
-                .password(encoder.encode(userDto.password()))
-                .build();
+        User user = mapper.toEntity(userDto);
+        user.setPassword(encoder.encode(userDto.password()));
         userRepository.save(user);
         return jwtService.generateToken(user);
     }
 
     public UserInfoDto getCurrentUser() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new UserInfoDto(user.getId(), user.getEmail());
+        return mapper.toDto(user);
     }
 
 }
