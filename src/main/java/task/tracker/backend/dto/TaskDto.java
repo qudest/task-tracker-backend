@@ -7,7 +7,7 @@ public record TaskDto(
         UUID id,
         String title,
         String description,
-        boolean isCompleted,
+        boolean completed,
         Instant completedAt
 ) {
 }

@@ -30,14 +30,14 @@ public class Task {
     User user;
 
     @Column(nullable = false)
-    boolean isCompleted = false;
+    boolean completed = false;
 
     Instant completedAt;
 
     @PrePersist
     @PreUpdate
     public void prePersist() {
-        if (isCompleted) {
+        if (completed) {
             completedAt = Instant.now();
         } else {
             completedAt = null;
