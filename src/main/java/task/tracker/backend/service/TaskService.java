@@ -45,6 +45,7 @@ public class TaskService {
             throw new AccessDeniedException("You can't update this task");
         }
         Task updatingTask = mapper.toEntity(taskDto);
+        updatingTask.setId(id);
         updatingTask.setUser(task.getUser());
         Task saved = taskRepository.save(updatingTask);
         return mapper.toDto(saved);
