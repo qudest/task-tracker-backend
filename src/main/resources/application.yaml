@@ -9,6 +9,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      acks: ${SPRING_KAFKA_PRODUCER_ACKS}
+      properties:
+        delivery.timeout.ms: ${SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS}
+        linger.ms: ${SPRING_KAFKA_PRODUCER_LINGER_MS}
+        request.timeout.ms: ${SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS}
 
 jwt:
   secret: ${JWT_SECRET}
