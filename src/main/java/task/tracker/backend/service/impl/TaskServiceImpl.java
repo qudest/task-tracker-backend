@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import task.tracker.backend.dto.TaskDto;
 import task.tracker.backend.exception.TaskNotFoundException;
 import task.tracker.backend.mapper.TaskMapper;
@@ -38,6 +39,7 @@ public class TaskServiceImpl implements TaskService {
         return mapper.toDto(saved);
     }
 
+    @Transactional
     public TaskDto updateTask(UUID id, TaskDto taskDto) {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         if (!task.getUser().getId().equals(
@@ -52,6 +54,7 @@ public class TaskServiceImpl implements TaskService {
         return mapper.toDto(saved);
     }
 
+    @Transactional
     public void deleteTask(UUID id) {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         if (!task.getUser().getId().equals(
