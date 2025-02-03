@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
     JwtService jwtService;
     PasswordEncoder encoder;
     UserMapper mapper = UserMapper.INSTANCE;
+    NotificationService notificationService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,6 +49,7 @@ public class UserService implements UserDetailsService {
         User user = mapper.toEntity(userDto);
         user.setPassword(encoder.encode(userDto.password()));
         userRepository.save(user);
+        notificationService.sendWelcomeEmail(user.getEmail());
         return jwtService.generateToken(user);
     }
 
