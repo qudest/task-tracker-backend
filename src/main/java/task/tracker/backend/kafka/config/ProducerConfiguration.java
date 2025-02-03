@@ -22,16 +22,19 @@ public class ProducerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     String bootstrapServers;
 
-    @Value("{spring.kafka.producer.asks")
+    @Value("${spring.kafka.producer.acks}")
     String acks;
 
-    @Value("{spring.kafka.producer.delivery-timeout-ms")
+    @Value("${spring.kafka.producer.properties.enable.idempotence}")
+    String enableIdempotence;
+
+    @Value("${spring.kafka.producer.properties.delivery.timeout.ms}")
     String deliveryTimeoutMs;
 
-    @Value("{spring.kafka.producer.linger-ms")
+    @Value("${spring.kafka.producer.properties.linger.ms}")
     String lingerMs;
 
-    @Value("{spring.kafka.producer.request-timeout-ms")
+    @Value("${spring.kafka.producer.properties.request.timeout.ms}")
     String requestTimeoutMs;
 
     private Map<String, Object> producerConfigs() {
@@ -40,6 +43,7 @@ public class ProducerConfiguration {
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class,
                 ProducerConfig.ACKS_CONFIG, acks,
+                ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, enableIdempotence,
                 ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, deliveryTimeoutMs,
                 ProducerConfig.LINGER_MS_CONFIG, lingerMs,
                 ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeoutMs
