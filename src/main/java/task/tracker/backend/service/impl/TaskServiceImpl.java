@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import task.tracker.backend.dto.TaskCreationDto;
 import task.tracker.backend.dto.TaskDto;
 import task.tracker.backend.exception.TaskNotFoundException;
 import task.tracker.backend.mapper.TaskMapper;
@@ -31,8 +32,8 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAllByUser(user).stream().map(mapper::toDto).toList();
     }
 
-    public TaskDto createTask(TaskDto taskDto) {
-        Task task = mapper.toEntity(taskDto);
+    public TaskDto createTask(TaskCreationDto taskCreationDto) {
+        Task task = mapper.toEntity(taskCreationDto);
         task.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         task.setCompleted(false);
         Task saved = taskRepository.save(task);

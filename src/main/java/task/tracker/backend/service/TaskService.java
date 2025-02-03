@@ -1,5 +1,6 @@
 package task.tracker.backend.service;
 
+import task.tracker.backend.dto.TaskCreationDto;
 import task.tracker.backend.dto.TaskDto;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface TaskService {
 
     List<TaskDto> getTasks();
 
-    TaskDto createTask(TaskDto taskDto);
+    TaskDto createTask(TaskCreationDto taskDto);
 
     TaskDto updateTask(UUID id, TaskDto taskDto);
 

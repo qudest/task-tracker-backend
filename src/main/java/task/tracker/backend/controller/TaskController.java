@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import task.tracker.backend.dto.TaskCreationDto;
 import task.tracker.backend.dto.TaskDto;
 import task.tracker.backend.service.TaskService;
 
@@ -24,8 +25,8 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.createTask(taskDto));
+    public ResponseEntity<TaskDto> createTask(@RequestBody TaskCreationDto taskCreationDto) {
+        return ResponseEntity.ok(taskService.createTask(taskCreationDto));
     }
 
     @PutMapping("/tasks/{id}")
