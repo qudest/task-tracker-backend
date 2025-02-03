@@ -3,7 +3,7 @@ package task.tracker.backend.templates;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailTemplates {
+public final class EmailTemplates {
 
     public static final String WELCOME_EMAIL_SUBJECT = "Welcome to Task Tracker – Let’s Get Started!";
     public static final String WELCOME_EMAIL_MESSAGE = """
@@ -24,5 +24,8 @@ public class EmailTemplates {
             Best wishes,
             The Task Tracker Team
             """;
+
+    private EmailTemplates() {
+    }
 
 }
