@@ -35,7 +35,7 @@ public class SecurityConfig {
         return http
                 .cors(cors -> corsConfiguration.corsConfigurationSource())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "user", "auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user", "/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(userAuthEntryPoint))
