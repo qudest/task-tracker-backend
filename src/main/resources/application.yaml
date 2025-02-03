@@ -17,6 +17,7 @@ spring:
         delivery.timeout.ms: ${SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS}
         linger.ms: ${SPRING_KAFKA_PRODUCER_LINGER_MS}
         request.timeout.ms: ${SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS}
+        enable.idempotence: ${SPRING_KAFKA_PRODUCER_ENABLE_IDEMPOTENCE}
 
 jwt:
   secret: ${JWT_SECRET}
