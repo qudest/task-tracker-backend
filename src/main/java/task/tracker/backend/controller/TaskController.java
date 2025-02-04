@@ -1,5 +1,6 @@
 package task.tracker.backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import task.tracker.backend.dto.TaskCreationDto;
 import task.tracker.backend.dto.TaskDto;
+import task.tracker.backend.dto.TaskUpdateDto;
 import task.tracker.backend.service.TaskService;
 
 import java.util.List;
@@ -30,8 +32,8 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable UUID id, @RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.updateTask(id, taskDto));
+    public ResponseEntity<TaskDto> updateTask(@PathVariable UUID id, @Valid @RequestBody TaskUpdateDto taskUpdateDto) {
+        return ResponseEntity.ok(taskService.updateTask(id, taskUpdateDto));
     }
 
     @DeleteMapping("/tasks/{id}")

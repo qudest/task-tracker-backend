@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import task.tracker.backend.dto.TaskCreationDto;
 import task.tracker.backend.dto.TaskDto;
+import task.tracker.backend.dto.TaskUpdateDto;
 import task.tracker.backend.exception.TaskNotFoundException;
 import task.tracker.backend.mapper.TaskMapper;
 import task.tracker.backend.model.Task;
@@ -41,14 +42,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Transactional
-    public TaskDto updateTask(UUID id, TaskDto taskDto) {
+    public TaskDto updateTask(UUID id, TaskUpdateDto taskUpdateDto) {
         Task task = taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
         if (!task.getUser().getId().equals(
                 ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()
         )) {
             throw new AccessDeniedException("You can't update this task");
         }
-        Task updatingTask = mapper.toEntity(taskDto);
+        Task updatingTask = mapper.toEntity(taskUpdateDto);
         updatingTask.setId(id);
         updatingTask.setUser(task.getUser());
         Task saved = taskRepository.save(updatingTask);
